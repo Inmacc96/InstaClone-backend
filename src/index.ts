@@ -1,1 +1,3 @@
-console.log("Hello World!")
+import connectDB from "./config/db.config";
+
+connectDB();
