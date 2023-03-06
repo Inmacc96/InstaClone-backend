@@ -6,6 +6,13 @@ const resolvers = {
       return null;
     },
   },
+  Mutation: {
+    // User
+    createUser: () => {
+      console.log("Creating user...");
+      return null;
+    },
+  },
 };
 
 export default resolvers;
