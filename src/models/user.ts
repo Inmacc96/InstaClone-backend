@@ -1,15 +1,5 @@
 import { Schema, model } from "mongoose";
-
-interface User {
-  name: String;
-  username: String;
-  email: String;
-  avatar?: String;
-  siteWeb?: String;
-  description?: String;
-  password: String;
-  createdAt?: String;
-}
+import { User } from "../types/graphql";
 
 const UserSchema = new Schema<User>({
   name: {

@@ -1,4 +1,6 @@
-const resolvers = {
+import { Resolvers } from "../types/graphql";
+
+const resolvers: Resolvers = {
   Query: {
     // User
     getUser: () => {
