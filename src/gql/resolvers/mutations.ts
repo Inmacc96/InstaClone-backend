@@ -1,11 +1,12 @@
 import { GraphQLError } from "graphql";
+import bcrypt from "bcryptjs";
 import User from "../../models/user";
 import { MutationResolvers } from "../../types/graphql";
 
 const mutations: MutationResolvers = {
   // User
   createUser: async (_, { input }) => {
-    const { email, username } = input;
+    const { email, username, password } = input;
 
     // Revisar si el email está en uso
     const foundEmail = await User.findOne({ email });
@@ -31,7 +32,9 @@ const mutations: MutationResolvers = {
       });
     }
 
-    // TODO: Hashear el password
+    // Hashear el password
+    const salt = await bcrypt.genSalt(10);
+    input.password = await bcrypt.hash(password, salt);
 
     // Guardar en la base de datos
     try {
