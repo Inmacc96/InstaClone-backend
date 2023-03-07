@@ -1,7 +1,19 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
 import { GraphQLError } from "graphql";
 import User from "../models/user";
-import { UserInput, AuthInput } from "../types/graphql";
+import { UserInput, AuthInput, User as UserType } from "../types/graphql";
+dotenv.config({ path: ".env" });
+
+const createToken = (
+  user: UserType,
+  secret: jwt.Secret,
+  expiresIn: string
+): string => {
+  const { id, email, username, name } = user;
+  return jwt.sign({ id, email, username, name }, secret, { expiresIn });
+};
 
 export const createUser = async (input: UserInput) => {
   const { email, username, password } = input;
@@ -52,7 +64,24 @@ export const createUser = async (input: UserInput) => {
 export const authUser = async (input: AuthInput) => {
   const { email, password } = input;
 
-  console.log(email, password);
+  // Comprobar que el usuario existe
+  const foundUser = await User.findOne({ email });
 
-  return null;
+  // Comprobar que la contraseña es correcta
+  const isCorrectPassword =
+    !!foundUser && (await bcrypt.compare(password, foundUser.password));
+
+  if (!foundUser || !isCorrectPassword) {
+    throw new GraphQLError("Wrong credentials", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+  // Crear el token
+  const token = process.env.JWT_SECRET_KEY
+    ? createToken(foundUser, process.env.JWT_SECRET_KEY, "24h")
+    : null;
+
+  return { token };
 };
