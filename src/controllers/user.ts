@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { GraphQLError } from "graphql";
 import User from "../models/user";
-import { UserInput } from '../types/graphql';
+import { UserInput, AuthInput } from "../types/graphql";
 
 export const createUser = async (input: UserInput) => {
   const { email, username, password } = input;
@@ -47,4 +47,12 @@ export const createUser = async (input: UserInput) => {
       },
     });
   }
+};
+
+export const authUser = async (input: AuthInput) => {
+  const { email, password } = input;
+
+  console.log(email, password);
+
+  return null;
 };

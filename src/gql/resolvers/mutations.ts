@@ -1,9 +1,10 @@
 import { MutationResolvers } from "../../types/graphql";
-import { createUser } from "../../controllers/user";
+import { createUser, authUser } from "../../controllers/user";
 
 const mutations: MutationResolvers = {
   // User
-  newUser: async (_, { input }) => createUser(input),
+  newUser: (_, { input }) => createUser(input),
+  authUser: (_, { input }) => authUser(input),
 };
 
 export default mutations;
