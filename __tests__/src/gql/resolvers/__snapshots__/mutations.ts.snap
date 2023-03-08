@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[Mutation.newUser] should create a new user 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "newUser": {
+          "email": "usertest@usertest.com",
+          "id": "ObjectId('6408bddf556f56e7beffa95c')",
+          "name": "user test",
+          "password": "$2a$10$eAX2vLXJw/6jpYKx33kOL.RVxZYZ2eeGUcR/3NsQOmK2Q7Ds7QmW2",
+          "username": "usertest",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
