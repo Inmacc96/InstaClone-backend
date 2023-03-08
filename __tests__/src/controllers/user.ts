@@ -2,10 +2,10 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { GraphQLError } from "graphql";
 import * as dotenv from "dotenv";
-dotenv.config({ path: ".env" });
+dotenv.config({ path: ".env.test" });
 import User from "../../../src/models/user";
-import { UserInput } from "../../../src/types/graphql";
-import { createUser } from "../../../src/controllers/user";
+import { AuthInput, UserInput } from "../../../src/types/graphql";
+import { authUser, createUser } from "../../../src/controllers/user";
 
 const userInput: UserInput = {
   name: "user test",
@@ -91,6 +91,90 @@ describe("createUser", () => {
     });
 
     mockSave.mockRestore();
+  });
+});
+
+describe("authUser", () => {
+  beforeEach(async () => {
+    //Hashear password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userInput.password, salt);
+
+    const mockUser = new User({ ...userInput, password: hashedPassword });
+    await mockUser.save();
+  });
+
+  it("should return a token when correct credentials are provided", async () => {
+    const authInput: AuthInput = {
+      email: "usertest@usertest.com",
+      password: "usertest123",
+    };
+
+    const { token } = await authUser(authInput);
+    expect(token).not.toBeNull();
+    expect(typeof token).toBe("string");
+  });
+
+  it("should throw an error when wrong email are provided", async () => {
+    const authInput: AuthInput = {
+      email: "usertest2@usertest.com",
+      password: "usertest123",
+    };
+
+    await expect(authUser(authInput)).rejects.toThrow(GraphQLError);
+
+    await expect(authUser(authInput)).rejects.toMatchObject({
+      message: "Wrong credentials",
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  });
+
+  it("should throw an error when wrong password are provided", async () => {
+    const authInput: AuthInput = {
+      email: "usertest@usertest.com",
+      password: "usertest",
+    };
+
+    await expect(authUser(authInput)).rejects.toThrow(GraphQLError);
+
+    await expect(authUser(authInput)).rejects.toMatchObject({
+      message: "Wrong credentials",
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  });
+
+  it("should return token null when JWT_SECRET_KEY is not defined", async () => {
+    const authInput: AuthInput = {
+      email: "usertest@usertest.com",
+      password: "usertest123",
+    };
+
+    const originalEnv = { ...process.env };
+    delete process.env.JWT_SECRET_KEY;
+
+    const { token } = await authUser(authInput);
+    expect(token).toBeNull();
+
+    process.env = originalEnv;
+  });
+
+  it("should return token null when JWT_SECRET_KEY is a empty string", async () => {
+    const authInput: AuthInput = {
+      email: "usertest@usertest.com",
+      password: "usertest123",
+    };
+
+    const originalEnv = { ...process.env };
+    process.env.JWT_SECRET_KEY = "";
+
+    const { token } = await authUser(authInput);
+    expect(token).toBeNull();
+
+    process.env = originalEnv;
   });
 });
 
