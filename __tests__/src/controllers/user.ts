@@ -47,17 +47,13 @@ describe("createUser", () => {
 
     await expect(createUser(userInput)).rejects.toThrow(GraphQLError);
 
-    try {
-      await createUser(userInput);
-    } catch (err) {
-      expect(err).toMatchObject({
-        message: "This email is already in use",
-        extensions: {
-          code: "BAD_USER_INPUT",
-          argumentName: "email",
-        },
-      });
-    }
+    await expect(createUser(userInput)).rejects.toMatchObject({
+      message: "This email is already in use",
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "email",
+      },
+    });
   });
 
   it("should throw an error when username is already in use", async () => {
@@ -71,36 +67,28 @@ describe("createUser", () => {
 
     await expect(createUser(userInput)).rejects.toThrow(GraphQLError);
 
-    try {
-      await createUser(userInput);
-    } catch (err) {
-      expect(err).toMatchObject({
-        message: "This username is already in use",
-        extensions: {
-          code: "BAD_USER_INPUT",
-          argumentName: "username",
-        },
-      });
-    }
+    await expect(createUser(userInput)).rejects.toMatchObject({
+      message: "This username is already in use",
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
   });
 
   it("should throw an error when there is an error saving the user", async () => {
     const mockSave = jest
       .spyOn(User.prototype, "save")
-      .mockRejectedValueOnce(new Error("Database error"));
+      .mockRejectedValue(new Error("Database error"));
 
     await expect(createUser(userInput)).rejects.toThrow(GraphQLError);
 
-    try {
-      await createUser(userInput);
-    } catch (err) {
-      expect(err).toMatchObject({
-        message: "Error saving the new user in the database",
-        extensions: {
-          code: "INTERNAL_SERVER_ERROR",
-        },
-      });
-    }
+    await expect(createUser(userInput)).rejects.toMatchObject({
+      message: "Error saving the new user in the database",
+      extensions: {
+        code: "INTERNAL_SERVER_ERROR",
+      },
+    });
 
     mockSave.mockRestore();
   });
