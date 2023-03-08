@@ -1,19 +1,9 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import { GraphQLError } from "graphql";
 import User from "../models/user";
-import { UserInput, AuthInput, User as UserType } from "../types/graphql";
+import { UserInput, AuthInput } from "../types/graphql";
 dotenv.config({ path: ".env" });
-
-const createToken = (
-  user: UserType,
-  secret: jwt.Secret,
-  expiresIn: string
-): string => {
-  const { id, email, username, name } = user;
-  return jwt.sign({ id, email, username, name }, secret, { expiresIn });
-};
 
 export const createUser = async (input: UserInput) => {
   const { email, username, password } = input;
