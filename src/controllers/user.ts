@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
 import { GraphQLError } from "graphql";
+import { createToken } from "../helpers";
 import User from "../models/user";
 import { UserInput, AuthInput } from "../types/graphql";
 dotenv.config({ path: ".env" });
@@ -34,11 +35,11 @@ export const createUser = async (input: UserInput) => {
 
   // Hashear el password
   const salt = await bcrypt.genSalt(10);
-  input.password = await bcrypt.hash(password, salt);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   // Guardar en la base de datos
   try {
-    const newUser = new User(input);
+    const newUser = new User({...input, password: hashedPassword});
     await newUser.save();
     return newUser;
   } catch (err) {
