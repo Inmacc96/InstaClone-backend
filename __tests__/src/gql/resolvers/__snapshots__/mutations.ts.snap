@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[Mutation.newUser] should create a new user when the input is valid 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "newUser": {
+          "email": "usertest@usertest.com",
+          "id": "ObjectId('6408bddf556f56e7beffa95c')",
+          "name": "user test",
+          "password": "$2a$10$eAX2vLXJw/6jpYKx33kOL.RVxZYZ2eeGUcR/3NsQOmK2Q7Ds7QmW2",
+          "username": "usertest",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.newUser] should throw error when some of the required fields of the input are empty 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "errors": [
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 22,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value { username: "usertest", email: "usertest@usertest.com", password: "usertest123" }; Field "name" of required type "String!" was not provided.",
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.newUser] should throw error when the email input is already in use 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "newUser": null,
+      },
+      "errors": [
+        {
+          "extensions": {
+            "argumentName": "email",
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 7,
+              "line": 3,
+            },
+          ],
+          "message": "This email is already in use",
+          "path": [
+            "newUser",
+          ],
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.newUser] should throw error when the input is empty 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "errors": [
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 22,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "name" of required type "String!" was not provided.",
+        },
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 22,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "username" of required type "String!" was not provided.",
+        },
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 22,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "email" of required type "String!" was not provided.",
+        },
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 22,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "password" of required type "String!" was not provided.",
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.newUser] should throw error when the username input is already in use 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "newUser": null,
+      },
+      "errors": [
+        {
+          "extensions": {
+            "argumentName": "username",
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 7,
+              "line": 3,
+            },
+          ],
+          "message": "This username is already in use",
+          "path": [
+            "newUser",
+          ],
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.newUser] should throw error when there is an error saving the user 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "newUser": null,
+      },
+      "errors": [
+        {
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+          },
+          "locations": [
+            {
+              "column": 7,
+              "line": 3,
+            },
+          ],
+          "message": "Error saving the new user in the database",
+          "path": [
+            "newUser",
+          ],
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
