@@ -34,5 +34,5 @@ type Query {
 type Mutation {
   # User
   newUser(input: UserInput!): User
-  authUser(input: AuthInput!): Token
+  authUser(input: AuthInput!): Token!
 }
