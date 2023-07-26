@@ -40,6 +40,12 @@ export type Query = {
   getUser?: Maybe<User>;
 };
 
+
+export type QueryGetUserArgs = {
+  id?: InputMaybe<Scalars['ID']>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type Token = {
   __typename?: 'Token';
   token?: Maybe<Scalars['String']>;
@@ -164,7 +170,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryGetUserArgs>>;
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
