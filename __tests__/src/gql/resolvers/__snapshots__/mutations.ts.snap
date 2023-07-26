@@ -1,5 +1,141 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`[Mutation.authUser] should return a token when the input is correct 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "authUser": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MDljOWNlZjIwZGI1NmRiMzVkZjRjZCIsImVtYWlsIjoidXNlcnRlc3RAdXNlcnRlc3QuY29tIiwidXNlcm5hbWUiOiJ1c2VydGVzdCIsIm5hbWUiOiJ1c2VyIHRlc3QiLCJpYXQiOjE2NzgzNjMwODYsImV4cCI6MTY3ODQ0OTQ4Nn0.5fXyYiF9bOzHJNvLzEWBspkQAN4V8qIPKOo10qciEg8",
+        },
+      },
+      "errors": undefined,
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.authUser] should throw an error when wrong email are provided 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "authUser": null,
+      },
+      "errors": [
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 5,
+              "line": 3,
+            },
+          ],
+          "message": "Wrong credentials",
+          "path": [
+            "authUser",
+          ],
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.authUser] should throw an error when wrong password are provided 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "data": {
+        "authUser": null,
+      },
+      "errors": [
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 5,
+              "line": 3,
+            },
+          ],
+          "message": "Wrong credentials",
+          "path": [
+            "authUser",
+          ],
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
+exports[`[Mutation.authUser] should throw error when the input is empty 1`] = `
+{
+  "body": {
+    "kind": "single",
+    "singleResult": {
+      "errors": [
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 21,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "email" of required type "String!" was not provided.",
+        },
+        {
+          "extensions": {
+            "code": "BAD_USER_INPUT",
+          },
+          "locations": [
+            {
+              "column": 21,
+              "line": 2,
+            },
+          ],
+          "message": "Variable "$input" got invalid value {}; Field "password" of required type "String!" was not provided.",
+        },
+      ],
+    },
+  },
+  "http": {
+    "headers": Map {
+      "cache-control" => "no-store",
+    },
+    "status": undefined,
+  },
+}
+`;
+
 exports[`[Mutation.newUser] should create a new user when the input is valid 1`] = `
 {
   "body": {
