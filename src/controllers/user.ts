@@ -43,7 +43,7 @@ export const createUser = async (input: UserInput) => {
     await newUser.save();
     return newUser;
   } catch (err) {
-    console.log(err);
+  /*   console.log(err); */
     throw new GraphQLError("Error saving the new user in the database", {
       extensions: {
         code: "INTERNAL_SERVER_ERROR",
