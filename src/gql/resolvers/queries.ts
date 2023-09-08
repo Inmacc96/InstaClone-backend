@@ -1,3 +1,4 @@
+import { generateUploadUrl } from "../../controllers/user";
 import { QueryResolvers } from "../../types/graphql";
 
 const queries: QueryResolvers = {
@@ -6,6 +7,7 @@ const queries: QueryResolvers = {
     console.log("Getting user");
     return null;
   },
+  generateUploadUrl: () => generateUploadUrl(),
 };
 
 export default queries;

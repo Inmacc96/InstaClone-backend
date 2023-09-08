@@ -29,6 +29,7 @@ type Token {
 type Query {
   # User
   getUser: User
+  generateUploadUrl: String!
 }
 
 type Mutation {

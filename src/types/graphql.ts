@@ -37,6 +37,7 @@ export type MutationNewUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  generateUploadUrl: Scalars['String'];
   getUser?: Maybe<User>;
 };
 
@@ -164,6 +165,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  generateUploadUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
