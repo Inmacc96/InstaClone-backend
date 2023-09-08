@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
-import { UserInput, AuthInput } from "../types/graphql";
+import { UserInput, AuthInput, QueryGetUserArgs } from "../types/graphql";
 dotenv.config({ path: ".env" });
 
 export const createUser = async (input: UserInput) => {
@@ -39,11 +39,11 @@ export const createUser = async (input: UserInput) => {
 
   // Guardar en la base de datos
   try {
-    const newUser = new User({...input, password: hashedPassword});
+    const newUser = new User({ ...input, password: hashedPassword });
     await newUser.save();
     return newUser;
   } catch (err) {
-  /*   console.log(err); */
+    /*   console.log(err); */
     throw new GraphQLError("Error saving the new user in the database", {
       extensions: {
         code: "INTERNAL_SERVER_ERROR",
@@ -75,4 +75,21 @@ export const authUser = async (input: AuthInput) => {
     : null;
 
   return { token };
+};
+
+export const getUser = async ({ id, username }: QueryGetUserArgs) => {
+  let user = null;
+
+  if (id) user = await User.findById(id);
+  if (username) user = await User.findOne({ username });
+
+  if (!user) {
+    throw new GraphQLError("User doesn't exist", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+
+  return user;
 };
