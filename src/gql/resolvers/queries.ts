@@ -1,12 +1,10 @@
+import { getUser } from "../../controllers/user";
 import { generateUploadUrl } from "../../controllers/user";
 import { QueryResolvers } from "../../types/graphql";
 
 const queries: QueryResolvers = {
   // User
-  getUser: () => {
-    console.log("Getting user");
-    return null;
-  },
+  getUser: (_, { id, username }) => getUser({ id, username }),
   generateUploadUrl: () => generateUploadUrl(),
 };
 
