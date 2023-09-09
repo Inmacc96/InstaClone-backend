@@ -37,8 +37,13 @@ export type MutationNewUserArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  generateUploadUrl: Scalars['String'];
+  generateUploadUrl: UploadUrl;
   getUser?: Maybe<User>;
+};
+
+
+export type QueryGenerateUploadUrlArgs = {
+  folder?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -50,6 +55,12 @@ export type QueryGetUserArgs = {
 export type Token = {
   __typename?: 'Token';
   token?: Maybe<Scalars['String']>;
+};
+
+export type UploadUrl = {
+  __typename?: 'UploadUrl';
+  signature: Scalars['String'];
+  timestamp: Scalars['Int'];
 };
 
 export type User = {
@@ -144,10 +155,12 @@ export type ResolversTypes = {
   AuthInput: AuthInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Token: ResolverTypeWrapper<Token>;
+  UploadUrl: ResolverTypeWrapper<UploadUrl>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
 };
@@ -157,10 +170,12 @@ export type ResolversParentTypes = {
   AuthInput: AuthInput;
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Query: {};
   String: Scalars['String'];
   Token: Token;
+  UploadUrl: UploadUrl;
   User: User;
   UserInput: UserInput;
 };
@@ -171,12 +186,18 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  generateUploadUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
   getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryGetUserArgs>>;
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
   token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type UploadUrlResolvers<ContextType = any, ParentType extends ResolversParentTypes['UploadUrl'] = ResolversParentTypes['UploadUrl']> = {
+  signature?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -197,6 +218,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
+  UploadUrl?: UploadUrlResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

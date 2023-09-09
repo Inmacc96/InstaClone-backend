@@ -5,7 +5,7 @@ import { QueryResolvers } from "../../types/graphql";
 const queries: QueryResolvers = {
   // User
   getUser: (_, { id, username }) => getUser({ id, username }),
-  generateUploadUrl: () => generateUploadUrl(),
+  generateUploadUrl: (_, { folder }) => generateUploadUrl({ folder }),
 };
 
 export default queries;

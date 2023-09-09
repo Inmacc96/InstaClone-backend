@@ -4,7 +4,12 @@ import { v2 as cloudinary } from "cloudinary";
 import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
-import { UserInput, AuthInput, QueryGetUserArgs } from "../types/graphql";
+import {
+  UserInput,
+  AuthInput,
+  QueryGetUserArgs,
+  QueryGenerateUploadUrlArgs,
+} from "../types/graphql";
 dotenv.config({ path: ".env" });
 
 export const createUser = async (input: UserInput) => {
@@ -95,18 +100,19 @@ export const getUser = async ({ id, username }: QueryGetUserArgs) => {
   return user;
 };
 
-export const generateUploadUrl = () => {
+export const generateUploadUrl = ({ folder }: QueryGenerateUploadUrlArgs) => {
+  const timestamp = Math.round(new Date().getTime() / 1000);
+
   const uploadParams = {
-    folder: "instaclone",
-    resource_type: "auto",
+    folder: `instaclone/${folder}`,
     allowed_formats: ["png", "jpeg"],
-    timestamp: Math.round(new Date().getTime() / 1000),
+    timestamp,
   };
 
-  const uploadUrl = cloudinary.utils.api_sign_request(
+  const signature = cloudinary.utils.api_sign_request(
     uploadParams,
     process.env.CLOUDINARY_API_SECRET!
   );
 
-  return uploadUrl;
+  return { signature, timestamp };
 };
