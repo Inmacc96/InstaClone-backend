@@ -113,13 +113,13 @@ export const generateUploadUrl = (
       },
     });
 
-  const {id} = currentUser;
+  const { id } = currentUser;
   const timestamp = Math.round(new Date().getTime() / 1000);
 
   const uploadParams = {
     folder: `instaclone/${folder}`,
     allowed_formats: ["png", "jpeg"],
-    public_id: `avatar-${id}`,
+    public_id: id,
     timestamp,
   };
 
