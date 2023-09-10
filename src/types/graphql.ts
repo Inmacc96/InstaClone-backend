@@ -22,6 +22,7 @@ export type AuthInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   authUser: Token;
+  deleteAvatar: User;
   newUser?: Maybe<User>;
   updateAvatar: User;
 };
@@ -188,6 +189,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
+  deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
 };

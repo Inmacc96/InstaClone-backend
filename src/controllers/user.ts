@@ -162,3 +162,34 @@ export const updateAvatar = async (urlImage: string, context: Context) => {
 
   return user;
 };
+
+export const deleteAvatar = async (context: Context) => {
+  const { currentUser } = context;
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  const { id } = currentUser;
+
+  // Comprobar que el usuario existe
+  let user = (await User.findById(id)) as UserType | null;
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+
+  // Obtener el usuario autenticado y actualizar el valor avatar
+  user = (await User.findByIdAndUpdate(
+    id,
+    { $unset: { avatar: 1 } },
+    { new: true }
+  )) as UserType;
+
+  return user;
+};
