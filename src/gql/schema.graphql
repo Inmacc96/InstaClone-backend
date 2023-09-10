@@ -26,9 +26,15 @@ type Token {
   token: String
 }
 
+type UploadUrl {
+  timestamp: Int!
+  signature: String!
+}
+
 type Query {
   # User
   getUser(id: ID, username: String): User
+  generateUploadUrl(folder: String): UploadUrl!
 }
 
 type Mutation {

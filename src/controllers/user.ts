@@ -1,9 +1,16 @@
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
+import { v2 as cloudinary } from "cloudinary";
 import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
-import { UserInput, AuthInput, QueryGetUserArgs } from "../types/graphql";
+import { Context } from "../types/Context";
+import {
+  UserInput,
+  AuthInput,
+  QueryGetUserArgs,
+  QueryGenerateUploadUrlArgs,
+} from "../types/graphql";
 dotenv.config({ path: ".env" });
 
 export const createUser = async (input: UserInput) => {
@@ -92,4 +99,34 @@ export const getUser = async ({ id, username }: QueryGetUserArgs) => {
   }
 
   return user;
+};
+
+export const generateUploadUrl = (
+  { folder }: QueryGenerateUploadUrlArgs,
+  context: Context
+) => {
+  const { currentUser } = context;
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  const { id } = currentUser;
+  const timestamp = Math.round(new Date().getTime() / 1000);
+
+  const uploadParams = {
+    folder: `instaclone/${folder}`,
+    allowed_formats: ["png", "jpeg"],
+    public_id: id,
+    timestamp,
+  };
+
+  const signature = cloudinary.utils.api_sign_request(
+    uploadParams,
+    process.env.CLOUDINARY_API_SECRET!
+  );
+
+  return { signature, timestamp };
 };
