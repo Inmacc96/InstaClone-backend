@@ -41,4 +41,5 @@ type Mutation {
   # User
   newUser(input: UserInput!): User
   authUser(input: AuthInput!): Token!
+  updateAvatar(urlImage: String!): User!
 }

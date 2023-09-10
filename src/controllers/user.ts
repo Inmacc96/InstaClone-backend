@@ -5,6 +5,7 @@ import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
 import { Context } from "../types/Context";
+import { User as UserType } from "../types/graphql";
 import {
   UserInput,
   AuthInput,
@@ -129,4 +130,35 @@ export const generateUploadUrl = (
   );
 
   return { signature, timestamp };
+};
+
+export const updateAvatar = async (urlImage: string, context: Context) => {
+  const { currentUser } = context;
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  const { id } = currentUser;
+
+  // Comprobar que el usuario existe
+  let user = (await User.findById(id)) as UserType | null;
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+
+  // Obtener el usuario autenticado y actualizar el valor avatar
+  user = (await User.findByIdAndUpdate(
+    id,
+    { avatar: urlImage },
+    { new: true }
+  )) as UserType;
+
+  return user;
 };
