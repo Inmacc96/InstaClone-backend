@@ -23,6 +23,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   authUser: Token;
   newUser?: Maybe<User>;
+  updateAvatar: User;
 };
 
 
@@ -33,6 +34,11 @@ export type MutationAuthUserArgs = {
 
 export type MutationNewUserArgs = {
   input: UserInput;
+};
+
+
+export type MutationUpdateAvatarArgs = {
+  urlImage: Scalars['String'];
 };
 
 export type Query = {
@@ -183,6 +189,7 @@ export type ResolversParentTypes = {
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
+  updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
