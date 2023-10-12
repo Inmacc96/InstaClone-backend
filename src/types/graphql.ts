@@ -25,6 +25,7 @@ export type Mutation = {
   deleteAvatar: User;
   newUser?: Maybe<User>;
   updateAvatar: User;
+  updateUser: User;
 };
 
 
@@ -40,6 +41,11 @@ export type MutationNewUserArgs = {
 
 export type MutationUpdateAvatarArgs = {
   urlImage: Scalars['String'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  input: UserUpdateInput;
 };
 
 export type Query = {
@@ -88,6 +94,15 @@ export type UserInput = {
   name: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+export type UserUpdateInput = {
+  description?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  newPassword?: InputMaybe<Scalars['String']>;
+  oldPassword?: InputMaybe<Scalars['String']>;
+  siteWeb?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -170,6 +185,7 @@ export type ResolversTypes = {
   UploadUrl: ResolverTypeWrapper<UploadUrl>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
+  UserUpdateInput: UserUpdateInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -185,6 +201,7 @@ export type ResolversParentTypes = {
   UploadUrl: UploadUrl;
   User: User;
   UserInput: UserInput;
+  UserUpdateInput: UserUpdateInput;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -192,6 +209,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

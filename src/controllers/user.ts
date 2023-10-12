@@ -5,7 +5,7 @@ import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
 import { Context } from "../types/Context";
-import { User as UserType } from "../types/graphql";
+import { User as UserType, UserUpdateInput } from "../types/graphql";
 import {
   UserInput,
   AuthInput,
@@ -190,6 +190,59 @@ export const deleteAvatar = async (context: Context) => {
     { $unset: { avatar: 1 } },
     { new: true }
   )) as UserType;
+
+  return user;
+};
+
+export const updateUser = async (input: UserUpdateInput, context: Context) => {
+  const { currentUser } = context;
+
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  const { id } = currentUser;
+
+  // Comprobar que el usuario existe
+  let user = (await User.findById(id)) as UserType | null;
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+
+  // Si cambia la contraseña
+  if (input.oldPassword && input.newPassword) {
+    // Comprobar que la contraseña actual es correcta
+    const isCorrectPassword = await bcrypt.compare(
+      input.oldPassword,
+      user.password
+    );
+    if (!isCorrectPassword) {
+      throw new GraphQLError("Wrong password", {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      });
+    }
+    // Actualizar la nueva contraseña encriptada
+    const salt = await bcrypt.genSaltSync(10);
+    const hashedNewPassword = await bcrypt.hash(input.newPassword, salt);
+
+    user = (await User.findByIdAndUpdate(
+      id,
+      { password: hashedNewPassword },
+      { new: true }
+    )) as UserType;
+  } else {
+    // Cambia cualquier otro valor
+    user = (await User.findByIdAndUpdate(id, input, { new: true })) as UserType;
+  }
 
   return user;
 };

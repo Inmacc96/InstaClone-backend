@@ -22,6 +22,15 @@ input AuthInput {
   password: String!
 }
 
+input UserUpdateInput {
+  name: String
+  email: String
+  oldPassword: String
+  newPassword: String
+  siteWeb: String
+  description: String
+}
+
 type Token {
   token: String
 }
@@ -43,4 +52,5 @@ type Mutation {
   authUser(input: AuthInput!): Token!
   updateAvatar(urlImage: String!): User!
   deleteAvatar: User!
+  updateUser(input: UserUpdateInput!): User!
 }
