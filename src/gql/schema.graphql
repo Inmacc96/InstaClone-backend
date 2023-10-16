@@ -4,7 +4,7 @@ type User {
   username: String!
   email: String!
   avatar: String
-  siteWeb: String
+  website: String
   description: String
   password: String!
   createdAt: String
@@ -22,6 +22,15 @@ input AuthInput {
   password: String!
 }
 
+input UserUpdateInput {
+  name: String
+  email: String
+  oldPassword: String
+  newPassword: String
+  website: String
+  description: String
+}
+
 type Token {
   token: String
 }
@@ -33,7 +42,7 @@ type UploadUrl {
 
 type Query {
   # User
-  getUser(id: ID, username: String): User
+  getUser(id: ID, username: String): User!
   generateUploadUrl(folder: String): UploadUrl!
 }
 
@@ -43,4 +52,5 @@ type Mutation {
   authUser(input: AuthInput!): Token!
   updateAvatar(urlImage: String!): User!
   deleteAvatar: User!
+  updateUser(input: UserUpdateInput!): User!
 }

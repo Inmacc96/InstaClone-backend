@@ -25,6 +25,7 @@ export type Mutation = {
   deleteAvatar: User;
   newUser?: Maybe<User>;
   updateAvatar: User;
+  updateUser: User;
 };
 
 
@@ -42,10 +43,15 @@ export type MutationUpdateAvatarArgs = {
   urlImage: Scalars['String'];
 };
 
+
+export type MutationUpdateUserArgs = {
+  input: UserUpdateInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
-  getUser?: Maybe<User>;
+  getUser: User;
 };
 
 
@@ -79,8 +85,8 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   password: Scalars['String'];
-  siteWeb?: Maybe<Scalars['String']>;
   username: Scalars['String'];
+  website?: Maybe<Scalars['String']>;
 };
 
 export type UserInput = {
@@ -88,6 +94,15 @@ export type UserInput = {
   name: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+export type UserUpdateInput = {
+  description?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  newPassword?: InputMaybe<Scalars['String']>;
+  oldPassword?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -170,6 +185,7 @@ export type ResolversTypes = {
   UploadUrl: ResolverTypeWrapper<UploadUrl>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
+  UserUpdateInput: UserUpdateInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -185,6 +201,7 @@ export type ResolversParentTypes = {
   UploadUrl: UploadUrl;
   User: User;
   UserInput: UserInput;
+  UserUpdateInput: UserUpdateInput;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -192,11 +209,12 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
-  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryGetUserArgs>>;
+  getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
@@ -218,8 +236,8 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  siteWeb?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
