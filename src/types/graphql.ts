@@ -52,6 +52,7 @@ export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
   getUser: User;
+  searchUsers?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -63,6 +64,11 @@ export type QueryGenerateUploadUrlArgs = {
 export type QueryGetUserArgs = {
   id?: InputMaybe<Scalars['ID']>;
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QuerySearchUsersArgs = {
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type Token = {
@@ -215,6 +221,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
+  searchUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, Partial<QuerySearchUsersArgs>>;
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {

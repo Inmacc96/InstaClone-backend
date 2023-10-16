@@ -246,3 +246,9 @@ export const updateUser = async (input: UserUpdateInput, context: Context) => {
 
   return user;
 };
+
+export const searchUsers = async (search?: string | null) => {
+  // Buscamos por la clave name que coincida con el patron search(puede contenerlo)
+  // La opcion i significa que la busqueda es insensible a mayusc y minus
+  return await User.find({ name: { $regex: search, $options: "i" } });
+};
