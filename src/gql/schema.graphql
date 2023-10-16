@@ -4,7 +4,7 @@ type User {
   username: String!
   email: String!
   avatar: String
-  siteWeb: String
+  website: String
   description: String
   password: String!
   createdAt: String
@@ -27,7 +27,7 @@ input UserUpdateInput {
   email: String
   oldPassword: String
   newPassword: String
-  siteWeb: String
+  website: String
   description: String
 }
 
@@ -42,7 +42,7 @@ type UploadUrl {
 
 type Query {
   # User
-  getUser(id: ID, username: String): User
+  getUser(id: ID, username: String): User!
   generateUploadUrl(folder: String): UploadUrl!
 }
 

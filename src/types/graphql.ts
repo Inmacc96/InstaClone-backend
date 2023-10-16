@@ -51,7 +51,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
-  getUser?: Maybe<User>;
+  getUser: User;
 };
 
 
@@ -85,8 +85,8 @@ export type User = {
   id: Scalars['ID'];
   name: Scalars['String'];
   password: Scalars['String'];
-  siteWeb?: Maybe<Scalars['String']>;
   username: Scalars['String'];
+  website?: Maybe<Scalars['String']>;
 };
 
 export type UserInput = {
@@ -102,7 +102,7 @@ export type UserUpdateInput = {
   name?: InputMaybe<Scalars['String']>;
   newPassword?: InputMaybe<Scalars['String']>;
   oldPassword?: InputMaybe<Scalars['String']>;
-  siteWeb?: InputMaybe<Scalars['String']>;
+  website?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -214,7 +214,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
-  getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, Partial<QueryGetUserArgs>>;
+  getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
 };
 
 export type TokenResolvers<ContextType = any, ParentType extends ResolversParentTypes['Token'] = ResolversParentTypes['Token']> = {
@@ -236,8 +236,8 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  siteWeb?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
