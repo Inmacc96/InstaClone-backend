@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -12,6 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Void: any;
 };
 
 export type AuthInput = {
@@ -23,6 +24,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   authUser: Token;
   deleteAvatar: User;
+  follow?: Maybe<Scalars['Void']>;
   newUser?: Maybe<User>;
   updateAvatar: User;
   updateUser: User;
@@ -31,6 +33,11 @@ export type Mutation = {
 
 export type MutationAuthUserArgs = {
   input: AuthInput;
+};
+
+
+export type MutationFollowArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -192,6 +199,7 @@ export type ResolversTypes = {
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
   UserUpdateInput: UserUpdateInput;
+  Void: ResolverTypeWrapper<Scalars['Void']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -208,11 +216,13 @@ export type ResolversParentTypes = {
   User: User;
   UserInput: UserInput;
   UserUpdateInput: UserUpdateInput;
+  Void: Scalars['Void'];
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
@@ -248,11 +258,16 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Void'], any> {
+  name: 'Void';
+}
+
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
   UploadUrl?: UploadUrlResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  Void?: GraphQLScalarType;
 };
 

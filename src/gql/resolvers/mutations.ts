@@ -4,9 +4,10 @@ import {
   authUser,
   updateAvatar,
   deleteAvatar,
-  updateUser
+  updateUser,
 } from "../../controllers/user";
 import { Context } from "../../types/Context";
+import { followUser } from "../../controllers/follow";
 
 const mutations: MutationResolvers = {
   // User
@@ -16,6 +17,9 @@ const mutations: MutationResolvers = {
     updateAvatar(urlImage, context),
   deleteAvatar: (_, {}, context: Context) => deleteAvatar(context),
   updateUser: (_, { input }, context) => updateUser(input, context),
+
+  // Follow
+  follow: (_, { username }, context: Context) => followUser(username, context),
 };
 
 export default mutations;

@@ -1,3 +1,5 @@
+scalar Void
+
 type User {
   id: ID!
   name: String!
@@ -54,4 +56,7 @@ type Mutation {
   updateAvatar(urlImage: String!): User!
   deleteAvatar: User!
   updateUser(input: UserUpdateInput!): User!
+
+  # Follow
+  follow(username: String!): Void
 }
