@@ -47,7 +47,7 @@ export const followUser = async (username: string, context: Context) => {
     });
     await follow.save();
   } catch (err) {
-    throw new GraphQLError("Error saving the new user in the database", {
+    throw new GraphQLError(`Error following to ${username}`, {
       extensions: {
         code: "INTERNAL_SERVER_ERROR",
       },
@@ -84,4 +84,53 @@ export const isFollowingUser = async (username: string, context: Context) => {
   });
 
   return !!isFollowing;
+};
+
+export const unFollowUser = async (username: string, context: Context) => {
+  const { currentUser } = context;
+
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  // Comprobar que el usuario a dejar de seguir existe
+  const foundUser = await User.findOne({ username });
+
+  if (!foundUser) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
+  }
+  
+  // Comprobar que el usuario sigue a username
+  const isFollowing = await Follow.findOne({
+    idUser: currentUser.id,
+    follow: foundUser._id,
+  });
+
+  if (!isFollowing) {
+    throw new GraphQLError(`No follow to ${username}`, {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
+  }
+
+  // Eliminar el registro de Follow
+  try {
+    await Follow.deleteOne({ idUser: currentUser.id, follow: foundUser._id });
+  } catch (err) {
+    throw new GraphQLError(`Error unfollowing to ${username}`, {
+      extensions: {
+        code: "INTERNAL_SERVER_ERROR",
+      },
+    });
+  }
 };

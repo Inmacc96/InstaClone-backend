@@ -26,6 +26,7 @@ export type Mutation = {
   deleteAvatar: User;
   follow?: Maybe<Scalars['Void']>;
   newUser?: Maybe<User>;
+  unFollow?: Maybe<Scalars['Void']>;
   updateAvatar: User;
   updateUser: User;
 };
@@ -43,6 +44,11 @@ export type MutationFollowArgs = {
 
 export type MutationNewUserArgs = {
   input: UserInput;
+};
+
+
+export type MutationUnFollowArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -230,6 +236,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
+  unFollow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationUnFollowArgs, 'username'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };

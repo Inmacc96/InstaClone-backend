@@ -62,4 +62,5 @@ type Mutation {
 
   # Follow
   follow(username: String!): Void
+  unFollow(username: String!): Void
 }
