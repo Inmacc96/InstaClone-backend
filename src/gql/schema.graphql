@@ -47,6 +47,9 @@ type Query {
   getUser(id: ID, username: String): User!
   generateUploadUrl(folder: String): UploadUrl!
   searchUsers(search: String!): [User!]!
+
+  #Follow
+  isFollowing(username: String!): Boolean
 }
 
 type Mutation {

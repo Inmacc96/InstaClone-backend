@@ -54,3 +54,34 @@ export const followUser = async (username: string, context: Context) => {
     });
   }
 };
+
+export const isFollowingUser = async (username: string, context: Context) => {
+  const { currentUser } = context;
+
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  // Comprobar que el posible usuario seguido existe
+  const foundUser = await User.findOne({ username });
+
+  if (!foundUser) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
+  }
+
+  // Comprobar si el usuario logeado sigue a username
+  const isFollowing = await Follow.findOne({
+    idUser: currentUser.id,
+    follow: foundUser._id,
+  });
+
+  return !!isFollowing;
+};

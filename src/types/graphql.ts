@@ -59,6 +59,7 @@ export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
   getUser: User;
+  isFollowing?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
 };
 
@@ -71,6 +72,11 @@ export type QueryGenerateUploadUrlArgs = {
 export type QueryGetUserArgs = {
   id?: InputMaybe<Scalars['ID']>;
   username?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryIsFollowingArgs = {
+  username: Scalars['String'];
 };
 
 
@@ -231,6 +237,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
+  isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;
   searchUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'search'>>;
 };
 
