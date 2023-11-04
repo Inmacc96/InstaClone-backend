@@ -2,6 +2,7 @@ import { GraphQLError } from "graphql";
 import User from "../models/user";
 import Follow from "../models/follow";
 import { Context } from "../types/Context";
+import { User as UserType } from "../types/graphql";
 
 export const followUser = async (username: string, context: Context) => {
   const { currentUser } = context;
@@ -107,7 +108,7 @@ export const unFollowUser = async (username: string, context: Context) => {
       },
     });
   }
-  
+
   // Comprobar que el usuario sigue a username
   const isFollowing = await Follow.findOne({
     idUser: currentUser.id,
@@ -133,4 +134,55 @@ export const unFollowUser = async (username: string, context: Context) => {
       },
     });
   }
+};
+
+export const getFollowers = async (username: string) => {
+  // Comprobar que el usuario existe
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
+  }
+
+  // Obtener los usuarios que siguen a user
+  const followers = await Follow.find({ follow: user._id }).populate<{idUser: UserType}>("idUser");
+
+  const followersList: UserType[] = [];
+
+  for await (const data of followers) {
+      followersList.push(data.idUser);
+  }
+ 
+  return followersList;
+};
+
+
+export const getFollowings = async (username: string) => {
+  // Comprobar que el usuario existe
+  const user = await User.findOne({ username });
+
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        argumentName: "username",
+      },
+    });
+  }
+
+  // Obtener los usuarios que está siguiendo user
+  const followings = await Follow.find({ idUser: user._id }).populate<{follow: UserType}>("follow");
+
+  const followingsList: UserType[] = [];
+
+  for await (const data of followings) {
+      followingsList.push(data.follow);
+  }
+ 
+  return followingsList;
 };

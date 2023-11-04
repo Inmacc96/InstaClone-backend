@@ -50,6 +50,8 @@ type Query {
 
   #Follow
   isFollowing(username: String!): Boolean
+  getFollowers(username: String!): [User!]!
+  getFollowings(username: String!): [User!]!
 }
 
 type Mutation {
