@@ -19,6 +19,7 @@ type Token {
 type UploadUrl {
   timestamp: Int!
   signature: String!
+  public_id: String!
 }
 
 type Post {

@@ -124,6 +124,7 @@ export type Token = {
 
 export type UploadUrl = {
   __typename?: 'UploadUrl';
+  public_id: Scalars['String'];
   signature: Scalars['String'];
   timestamp: Scalars['Int'];
 };
@@ -294,6 +295,7 @@ export type TokenResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UploadUrlResolvers<ContextType = any, ParentType extends ResolversParentTypes['UploadUrl'] = ResolversParentTypes['UploadUrl']> = {
+  public_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   signature?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
