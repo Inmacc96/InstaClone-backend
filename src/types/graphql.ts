@@ -88,7 +88,8 @@ export type Query = {
 
 
 export type QueryGenerateUploadUrlArgs = {
-  folder?: InputMaybe<Scalars['String']>;
+  folder: Scalars['String'];
+  uploadType: UploadType;
 };
 
 
@@ -121,6 +122,11 @@ export type Token = {
   __typename?: 'Token';
   token?: Maybe<Scalars['String']>;
 };
+
+export enum UploadType {
+  Avatar = 'Avatar',
+  Post = 'Post'
+}
 
 export type UploadUrl = {
   __typename?: 'UploadUrl';
@@ -236,6 +242,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Token: ResolverTypeWrapper<Token>;
+  UploadType: UploadType;
   UploadUrl: ResolverTypeWrapper<UploadUrl>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
@@ -281,7 +288,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
+  generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;

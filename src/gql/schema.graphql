@@ -1,5 +1,10 @@
 scalar Void
 
+enum UploadType {
+  Avatar
+  Post
+}
+
 type User {
   id: ID!
   name: String!
@@ -53,7 +58,7 @@ input UserUpdateInput {
 type Query {
   # User
   getUser(id: ID, username: String): User!
-  generateUploadUrl(folder: String): UploadUrl!
+  generateUploadUrl(folder: String!, uploadType: UploadType!): UploadUrl!
   searchUsers(search: String!): [User!]!
 
   #Follow

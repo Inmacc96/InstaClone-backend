@@ -6,13 +6,15 @@ import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
 import { Context } from "../types/Context";
-import { User as UserType, UserUpdateInput } from "../types/graphql";
 import {
+  UploadType,
+  User as UserType,
+  UserUpdateInput,
   UserInput,
   AuthInput,
   QueryGetUserArgs,
-  QueryGenerateUploadUrlArgs,
 } from "../types/graphql";
+
 dotenv.config({ path: ".env" });
 
 export const createUser = async (input: UserInput) => {
@@ -104,7 +106,8 @@ export const getUser = async ({ id, username }: QueryGetUserArgs) => {
 };
 
 export const generateUploadUrl = (
-  { folder }: QueryGenerateUploadUrlArgs,
+  folder: string,
+  uploadType: UploadType,
   context: Context
 ) => {
   const { currentUser } = context;
@@ -115,8 +118,17 @@ export const generateUploadUrl = (
       },
     });
 
+  let public_id;
+  switch (uploadType) {
+    case UploadType.Avatar:
+      public_id = currentUser.id;
+      break;
+    case UploadType.Post:
+      public_id = uuidv4();
+      break;
+  }
+
   const timestamp = Math.round(new Date().getTime() / 1000);
-  const public_id = uuidv4();
 
   const uploadParams = {
     folder: `instaclone/${folder}`,
