@@ -28,6 +28,7 @@ type UploadUrl {
 }
 
 type Post {
+  id: ID!
   idUser: ID!
   urlFile: String!
   typeFile: String!
@@ -65,6 +66,9 @@ type Query {
   isFollowing(username: String!): Boolean
   getFollowers(username: String!): [User!]!
   getFollowings(username: String!): [User!]!
+
+  #Post
+  getPosts(username: String!): [Post!]!
 }
 
 type Mutation {

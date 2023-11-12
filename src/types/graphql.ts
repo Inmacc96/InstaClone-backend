@@ -81,6 +81,7 @@ export type Query = {
   generateUploadUrl: UploadUrl;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
+  getPosts?: Maybe<Array<Maybe<Post>>>;
   getUser: User;
   isFollowing?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
@@ -99,6 +100,11 @@ export type QueryGetFollowersArgs = {
 
 
 export type QueryGetFollowingsArgs = {
+  username: Scalars['String'];
+};
+
+
+export type QueryGetPostsArgs = {
   username: Scalars['String'];
 };
 
@@ -291,6 +297,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
+  getPosts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
   isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;
   searchUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'search'>>;

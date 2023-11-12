@@ -4,7 +4,11 @@ import Post from "../models/post";
 import { User as UserType } from "../types/graphql";
 import { Context } from "../types/Context";
 
-export const publish = async (urlFile: string, typeFile: string, context: Context) => {
+export const publish = async (
+  urlFile: string,
+  typeFile: string,
+  context: Context
+) => {
   const { currentUser } = context;
   if (!currentUser)
     throw new GraphQLError("Not authenticated", {
@@ -36,4 +40,20 @@ export const publish = async (urlFile: string, typeFile: string, context: Contex
       },
     });
   }
+};
+
+export const getPosts = async (username: string) => {
+  // Comprobar que el usuario existe
+  let user = (await User.findOne({ username })) as UserType | null;
+  if (!user) {
+    throw new GraphQLError("User not found", {
+      extensions: {
+        code: "BAD_USER_INPUT",
+      },
+    });
+  }
+
+  //Obtener los posts de user
+  const posts = await Post.find({ idUser: user.id }).sort({ createdAt: -1 });
+  return posts;
 };
