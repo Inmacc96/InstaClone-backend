@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { Post } from "../types/graphql";
 
 const PostSchema = new Schema({
   idUser: {
@@ -6,7 +7,7 @@ const PostSchema = new Schema({
     require: true,
     ref: "User",
   },
-  file: {
+  urlFile: {
     type: String,
     trim: true,
     require: true,
@@ -15,10 +16,10 @@ const PostSchema = new Schema({
     type: String,
     trim: true,
   },
-  createAt: {
+  createdAt: {
     type: Date,
     default: Date.now(),
   },
 });
 
-export default model("Post", PostSchema);
+export default model<Post>("Post", PostSchema);

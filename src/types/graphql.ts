@@ -26,6 +26,7 @@ export type Mutation = {
   deleteAvatar: User;
   follow?: Maybe<Scalars['Void']>;
   newUser?: Maybe<User>;
+  publish: Post;
   unFollow?: Maybe<Scalars['Void']>;
   updateAvatar: User;
   updateUser: User;
@@ -47,6 +48,12 @@ export type MutationNewUserArgs = {
 };
 
 
+export type MutationPublishArgs = {
+  typeFile: Scalars['String'];
+  urlFile: Scalars['String'];
+};
+
+
 export type MutationUnFollowArgs = {
   username: Scalars['String'];
 };
@@ -59,6 +66,14 @@ export type MutationUpdateAvatarArgs = {
 
 export type MutationUpdateUserArgs = {
   input: UserUpdateInput;
+};
+
+export type Post = {
+  __typename?: 'Post';
+  createdAt?: Maybe<Scalars['String']>;
+  idUser: Scalars['ID'];
+  typeFile: Scalars['String'];
+  urlFile: Scalars['String'];
 };
 
 export type Query = {
@@ -216,6 +231,7 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Token: ResolverTypeWrapper<Token>;
@@ -233,6 +249,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
+  Post: Post;
   Query: {};
   String: Scalars['String'];
   Token: Token;
@@ -248,9 +265,18 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
+  publish?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishArgs, 'typeFile' | 'urlFile'>>;
   unFollow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationUnFollowArgs, 'username'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
+};
+
+export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  typeFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  urlFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -292,6 +318,7 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
+  Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
   UploadUrl?: UploadUrlResolvers<ContextType>;

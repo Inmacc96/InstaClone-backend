@@ -12,6 +12,22 @@ type User {
   createdAt: String
 }
 
+type Token {
+  token: String
+}
+
+type UploadUrl {
+  timestamp: Int!
+  signature: String!
+}
+
+type Post {
+  idUser: ID!
+  urlFile: String!
+  typeFile: String!
+  createdAt: String
+}
+
 input UserInput {
   name: String!
   username: String!
@@ -31,15 +47,6 @@ input UserUpdateInput {
   newPassword: String
   website: String
   description: String
-}
-
-type Token {
-  token: String
-}
-
-type UploadUrl {
-  timestamp: Int!
-  signature: String!
 }
 
 type Query {
@@ -65,4 +72,7 @@ type Mutation {
   # Follow
   follow(username: String!): Void
   unFollow(username: String!): Void
+
+  # Post
+  publish(urlFile: String!, typeFile: String!): Post!
 }

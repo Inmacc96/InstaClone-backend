@@ -8,6 +8,7 @@ import {
 } from "../../controllers/user";
 import { Context } from "../../types/Context";
 import { followUser, unFollowUser } from "../../controllers/follow";
+import { publish } from "../../controllers/post";
 
 const mutations: MutationResolvers = {
   // User
@@ -20,7 +21,12 @@ const mutations: MutationResolvers = {
 
   // Follow
   follow: (_, { username }, context: Context) => followUser(username, context),
-  unFollow: (_, { username }, context: Context) => unFollowUser(username, context),
+  unFollow: (_, { username }, context: Context) =>
+    unFollowUser(username, context),
+
+  // Post
+  publish: (_, { urlFile, typeFile }, context: Context) =>
+    publish(urlFile, typeFile, context),
 };
 
 export default mutations;
