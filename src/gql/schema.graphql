@@ -1,5 +1,10 @@
 scalar Void
 
+enum UploadType {
+  Avatar
+  Post
+}
+
 type User {
   id: ID!
   name: String!
@@ -9,6 +14,24 @@ type User {
   website: String
   description: String
   password: String!
+  createdAt: String
+}
+
+type Token {
+  token: String
+}
+
+type UploadUrl {
+  timestamp: Int!
+  signature: String!
+  public_id: String!
+}
+
+type Post {
+  id: ID!
+  idUser: ID!
+  urlFile: String!
+  typeFile: String!
   createdAt: String
 }
 
@@ -33,25 +56,19 @@ input UserUpdateInput {
   description: String
 }
 
-type Token {
-  token: String
-}
-
-type UploadUrl {
-  timestamp: Int!
-  signature: String!
-}
-
 type Query {
   # User
   getUser(id: ID, username: String): User!
-  generateUploadUrl(folder: String): UploadUrl!
+  generateUploadUrl(folder: String!, uploadType: UploadType!): UploadUrl!
   searchUsers(search: String!): [User!]!
 
   #Follow
   isFollowing(username: String!): Boolean
   getFollowers(username: String!): [User!]!
   getFollowings(username: String!): [User!]!
+
+  #Post
+  getPosts(username: String!): [Post!]!
 }
 
 type Mutation {
@@ -65,4 +82,7 @@ type Mutation {
   # Follow
   follow(username: String!): Void
   unFollow(username: String!): Void
+
+  # Post
+  publish(urlFile: String!, typeFile: String!): Post!
 }

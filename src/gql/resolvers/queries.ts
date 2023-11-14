@@ -2,13 +2,18 @@ import { getUser, searchUsers } from "../../controllers/user";
 import { generateUploadUrl } from "../../controllers/user";
 import { QueryResolvers } from "../../types/graphql";
 import { Context } from "../../types/Context";
-import { getFollowers, getFollowings, isFollowingUser } from "../../controllers/follow";
+import {
+  getFollowers,
+  getFollowings,
+  isFollowingUser,
+} from "../../controllers/follow";
+import { getPosts } from "../../controllers/post";
 
 const queries: QueryResolvers = {
   // User
   getUser: (_, { id, username }) => getUser({ id, username }),
-  generateUploadUrl: (_, { folder }, context: Context) =>
-    generateUploadUrl({ folder }, context),
+  generateUploadUrl: (_, { folder, uploadType }, context: Context) =>
+    generateUploadUrl(folder, uploadType, context),
   searchUsers: (_, { search }) => searchUsers(search),
 
   // Follow
@@ -16,6 +21,9 @@ const queries: QueryResolvers = {
     isFollowingUser(username, context),
   getFollowers: (_, { username }) => getFollowers(username),
   getFollowings: (_, { username }) => getFollowings(username),
+
+  // Post
+  getPosts: (_, { username }) => getPosts(username),
 };
 
 export default queries;

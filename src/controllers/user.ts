@@ -1,17 +1,20 @@
 import bcrypt from "bcryptjs";
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
+import { v4 as uuidv4 } from "uuid";
 import { GraphQLError } from "graphql";
 import { createToken } from "../helpers";
 import User from "../models/user";
 import { Context } from "../types/Context";
-import { User as UserType, UserUpdateInput } from "../types/graphql";
 import {
+  UploadType,
+  User as UserType,
+  UserUpdateInput,
   UserInput,
   AuthInput,
   QueryGetUserArgs,
-  QueryGenerateUploadUrlArgs,
 } from "../types/graphql";
+
 dotenv.config({ path: ".env" });
 
 export const createUser = async (input: UserInput) => {
@@ -103,7 +106,8 @@ export const getUser = async ({ id, username }: QueryGetUserArgs) => {
 };
 
 export const generateUploadUrl = (
-  { folder }: QueryGenerateUploadUrlArgs,
+  folder: string,
+  uploadType: UploadType,
   context: Context
 ) => {
   const { currentUser } = context;
@@ -114,13 +118,22 @@ export const generateUploadUrl = (
       },
     });
 
-  const { id } = currentUser;
+  let public_id;
+  switch (uploadType) {
+    case UploadType.Avatar:
+      public_id = currentUser.id;
+      break;
+    case UploadType.Post:
+      public_id = uuidv4();
+      break;
+  }
+
   const timestamp = Math.round(new Date().getTime() / 1000);
 
   const uploadParams = {
     folder: `instaclone/${folder}`,
     allowed_formats: ["png", "jpeg"],
-    public_id: id,
+    public_id,
     timestamp,
   };
 
@@ -129,7 +142,7 @@ export const generateUploadUrl = (
     process.env.CLOUDINARY_API_SECRET!
   );
 
-  return { signature, timestamp };
+  return { signature, timestamp, public_id };
 };
 
 export const updateAvatar = async (urlImage: string, context: Context) => {

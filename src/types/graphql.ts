@@ -26,6 +26,7 @@ export type Mutation = {
   deleteAvatar: User;
   follow?: Maybe<Scalars['Void']>;
   newUser?: Maybe<User>;
+  publish: Post;
   unFollow?: Maybe<Scalars['Void']>;
   updateAvatar: User;
   updateUser: User;
@@ -47,6 +48,12 @@ export type MutationNewUserArgs = {
 };
 
 
+export type MutationPublishArgs = {
+  typeFile: Scalars['String'];
+  urlFile: Scalars['String'];
+};
+
+
 export type MutationUnFollowArgs = {
   username: Scalars['String'];
 };
@@ -61,11 +68,20 @@ export type MutationUpdateUserArgs = {
   input: UserUpdateInput;
 };
 
+export type Post = {
+  __typename?: 'Post';
+  createdAt?: Maybe<Scalars['String']>;
+  idUser: Scalars['ID'];
+  typeFile: Scalars['String'];
+  urlFile: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
+  getPosts?: Maybe<Array<Maybe<Post>>>;
   getUser: User;
   isFollowing?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
@@ -73,7 +89,8 @@ export type Query = {
 
 
 export type QueryGenerateUploadUrlArgs = {
-  folder?: InputMaybe<Scalars['String']>;
+  folder: Scalars['String'];
+  uploadType: UploadType;
 };
 
 
@@ -83,6 +100,11 @@ export type QueryGetFollowersArgs = {
 
 
 export type QueryGetFollowingsArgs = {
+  username: Scalars['String'];
+};
+
+
+export type QueryGetPostsArgs = {
   username: Scalars['String'];
 };
 
@@ -107,8 +129,14 @@ export type Token = {
   token?: Maybe<Scalars['String']>;
 };
 
+export enum UploadType {
+  Avatar = 'Avatar',
+  Post = 'Post'
+}
+
 export type UploadUrl = {
   __typename?: 'UploadUrl';
+  public_id: Scalars['String'];
   signature: Scalars['String'];
   timestamp: Scalars['Int'];
 };
@@ -216,9 +244,11 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Token: ResolverTypeWrapper<Token>;
+  UploadType: UploadType;
   UploadUrl: ResolverTypeWrapper<UploadUrl>;
   User: ResolverTypeWrapper<User>;
   UserInput: UserInput;
@@ -233,6 +263,7 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
+  Post: Post;
   Query: {};
   String: Scalars['String'];
   Token: Token;
@@ -248,15 +279,25 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
+  publish?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishArgs, 'typeFile' | 'urlFile'>>;
   unFollow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationUnFollowArgs, 'username'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
+export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  typeFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  urlFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, Partial<QueryGenerateUploadUrlArgs>>;
+  generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
+  getPosts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
   isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;
   searchUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'search'>>;
@@ -268,6 +309,7 @@ export type TokenResolvers<ContextType = any, ParentType extends ResolversParent
 };
 
 export type UploadUrlResolvers<ContextType = any, ParentType extends ResolversParentTypes['UploadUrl'] = ResolversParentTypes['UploadUrl']> = {
+  public_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   signature?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -292,6 +334,7 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
+  Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Token?: TokenResolvers<ContextType>;
   UploadUrl?: UploadUrlResolvers<ContextType>;
