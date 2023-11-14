@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { Comment } from "../types/graphql";
 
 const CommentSchema = new Schema({
   idPost: {
@@ -22,4 +23,4 @@ const CommentSchema = new Schema({
   },
 });
 
-export default model("Comment", CommentSchema);
+export default model<Comment>("Comment", CommentSchema);

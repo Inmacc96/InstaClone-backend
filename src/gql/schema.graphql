@@ -35,6 +35,14 @@ type Post {
   createdAt: String
 }
 
+type Comment {
+  id: ID!
+  idPost: ID!
+  idUser: ID!
+  comment: String!
+  createdAt: String
+}
+
 input UserInput {
   name: String!
   username: String!
@@ -54,6 +62,11 @@ input UserUpdateInput {
   newPassword: String
   website: String
   description: String
+}
+
+input CommentInput {
+  idPost: ID!
+  comment: String!
 }
 
 type Query {
@@ -85,4 +98,7 @@ type Mutation {
 
   # Post
   publish(urlFile: String!, typeFile: String!): Post!
+
+  # Comment
+  addComment(input: CommentInput!): Comment!
 }

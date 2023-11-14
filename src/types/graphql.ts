@@ -20,8 +20,23 @@ export type AuthInput = {
   password: Scalars['String'];
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  comment: Scalars['String'];
+  createdAt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  idPost: Scalars['ID'];
+  idUser: Scalars['ID'];
+};
+
+export type CommentInput = {
+  comment: Scalars['String'];
+  idPost: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addComment: Comment;
   authUser: Token;
   deleteAvatar: User;
   follow?: Maybe<Scalars['Void']>;
@@ -30,6 +45,11 @@ export type Mutation = {
   unFollow?: Maybe<Scalars['Void']>;
   updateAvatar: User;
   updateUser: User;
+};
+
+
+export type MutationAddCommentArgs = {
+  input: CommentInput;
 };
 
 
@@ -71,6 +91,7 @@ export type MutationUpdateUserArgs = {
 export type Post = {
   __typename?: 'Post';
   createdAt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
   idUser: Scalars['ID'];
   typeFile: Scalars['String'];
   urlFile: Scalars['String'];
@@ -81,7 +102,7 @@ export type Query = {
   generateUploadUrl: UploadUrl;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
-  getPosts?: Maybe<Array<Maybe<Post>>>;
+  getPosts: Array<Post>;
   getUser: User;
   isFollowing?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
@@ -241,6 +262,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   AuthInput: AuthInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Comment: ResolverTypeWrapper<Comment>;
+  CommentInput: CommentInput;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -260,6 +283,8 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AuthInput: AuthInput;
   Boolean: Scalars['Boolean'];
+  Comment: Comment;
+  CommentInput: CommentInput;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -274,7 +299,17 @@ export type ResolversParentTypes = {
   Void: Scalars['Void'];
 };
 
+export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = {
+  comment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  idPost?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationAddCommentArgs, 'input'>>;
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
@@ -287,6 +322,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   typeFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   urlFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -297,7 +333,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
-  getPosts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Post']>>>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
+  getPosts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
   isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;
   searchUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'search'>>;
@@ -333,6 +369,7 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type Resolvers<ContextType = any> = {
+  Comment?: CommentResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
