@@ -37,8 +37,8 @@ type Post {
 
 type Comment {
   id: ID!
-  idPost: ID!
-  idUser: ID!
+  idPost: Post!
+  idUser: User!
   comment: String!
   createdAt: String
 }
@@ -75,13 +75,16 @@ type Query {
   generateUploadUrl(folder: String!, uploadType: UploadType!): UploadUrl!
   searchUsers(search: String!): [User!]!
 
-  #Follow
+  # Follow
   isFollowing(username: String!): Boolean
   getFollowers(username: String!): [User!]!
   getFollowings(username: String!): [User!]!
 
-  #Post
+  # Post
   getPosts(username: String!): [Post!]!
+
+  # Comment
+  getComments(idPost: ID!): [Comment!]!
 }
 
 type Mutation {

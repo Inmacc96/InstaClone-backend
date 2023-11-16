@@ -8,6 +8,7 @@ import {
   isFollowingUser,
 } from "../../controllers/follow";
 import { getPosts } from "../../controllers/post";
+import { getComments } from "../../controllers/comment";
 
 const queries: QueryResolvers = {
   // User
@@ -24,6 +25,9 @@ const queries: QueryResolvers = {
 
   // Post
   getPosts: (_, { username }) => getPosts(username),
+
+  // Comments
+  getComments: (_, { idPost }) => getComments(idPost),
 };
 
 export default queries;

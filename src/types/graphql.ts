@@ -25,8 +25,8 @@ export type Comment = {
   comment: Scalars['String'];
   createdAt?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  idPost: Scalars['ID'];
-  idUser: Scalars['ID'];
+  idPost: Post;
+  user: User;
 };
 
 export type CommentInput = {
@@ -100,6 +100,7 @@ export type Post = {
 export type Query = {
   __typename?: 'Query';
   generateUploadUrl: UploadUrl;
+  getComments: Array<Comment>;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
   getPosts: Array<Post>;
@@ -112,6 +113,11 @@ export type Query = {
 export type QueryGenerateUploadUrlArgs = {
   folder: Scalars['String'];
   uploadType: UploadType;
+};
+
+
+export type QueryGetCommentsArgs = {
+  idPost: Scalars['ID'];
 };
 
 
@@ -303,8 +309,8 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   comment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  idPost?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  idPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -331,6 +337,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
+  getComments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'idPost'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
   getPosts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
