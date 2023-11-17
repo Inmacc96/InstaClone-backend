@@ -104,3 +104,15 @@ export const isLike = async (idPost: string, context: Context) => {
     });
   }
 };
+
+export const countLikes = async (idPost: string) => {
+  try {
+    return await Like.countDocuments({ idPost });
+  } catch (err) {
+    throw new GraphQLError("Error counting likes", {
+      extensions: {
+        code: "INTERNAL_SERVER_ERROR",
+      },
+    });
+  }
+};

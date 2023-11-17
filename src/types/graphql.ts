@@ -111,6 +111,7 @@ export type Post = {
 
 export type Query = {
   __typename?: 'Query';
+  countLikes?: Maybe<Scalars['Int']>;
   generateUploadUrl: UploadUrl;
   getComments: Array<Comment>;
   getFollowers: Array<User>;
@@ -120,6 +121,11 @@ export type Query = {
   isFollowing?: Maybe<Scalars['Boolean']>;
   isLike?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
+};
+
+
+export type QueryCountLikesArgs = {
+  idPost: Scalars['ID'];
 };
 
 
@@ -356,6 +362,7 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  countLikes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<QueryCountLikesArgs, 'idPost'>>;
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getComments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'idPost'>>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
