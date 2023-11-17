@@ -39,12 +39,12 @@ export type Mutation = {
   addComment: Comment;
   authUser: Token;
   deleteAvatar: User;
+  dislike?: Maybe<Scalars['Void']>;
   follow?: Maybe<Scalars['Void']>;
   like?: Maybe<Scalars['Void']>;
   newUser?: Maybe<User>;
   publish: Post;
   unFollow?: Maybe<Scalars['Void']>;
-  unlike?: Maybe<Scalars['Void']>;
   updateAvatar: User;
   updateUser: User;
 };
@@ -57,6 +57,11 @@ export type MutationAddCommentArgs = {
 
 export type MutationAuthUserArgs = {
   input: AuthInput;
+};
+
+
+export type MutationDislikeArgs = {
+  idPost: Scalars['ID'];
 };
 
 
@@ -83,11 +88,6 @@ export type MutationPublishArgs = {
 
 export type MutationUnFollowArgs = {
   username: Scalars['String'];
-};
-
-
-export type MutationUnlikeArgs = {
-  idPost: Scalars['ID'];
 };
 
 
@@ -342,12 +342,12 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationAddCommentArgs, 'input'>>;
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  dislike?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationDislikeArgs, 'idPost'>>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
   like?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationLikeArgs, 'idPost'>>;
   newUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationNewUserArgs, 'input'>>;
   publish?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationPublishArgs, 'typeFile' | 'urlFile'>>;
   unFollow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationUnFollowArgs, 'username'>>;
-  unlike?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationUnlikeArgs, 'idPost'>>;
   updateAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateAvatarArgs, 'urlImage'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };

@@ -111,5 +111,5 @@ type Mutation {
 
   # Like
   like(idPost: ID!): Void
-  unlike(idPost: ID!): Void
+  dislike(idPost: ID!): Void
 }

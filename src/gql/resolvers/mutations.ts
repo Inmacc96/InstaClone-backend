@@ -35,7 +35,7 @@ const mutations: MutationResolvers = {
 
   // Like
   like: (_, { idPost }, context: Context) => addLike(idPost, context),
-  unlike: (_, { idPost }, context: Context) => deleteLike(idPost, context),
+  dislike: (_, { idPost }, context: Context) => deleteLike(idPost, context),
 };
 
 export default mutations;
