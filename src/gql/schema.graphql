@@ -106,5 +106,7 @@ type Mutation {
   addComment(input: CommentInput!): Comment!
 
   # Like
-  addLike(idPost: ID!): Void
+  like(idPost: ID!): Void
+  unlike(idPost: ID!): Void
+
 }

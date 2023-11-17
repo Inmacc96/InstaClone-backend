@@ -10,7 +10,7 @@ import { Context } from "../../types/Context";
 import { followUser, unFollowUser } from "../../controllers/follow";
 import { publish } from "../../controllers/post";
 import { addComment } from "../../controllers/comment";
-import { addLike } from "../../controllers/like";
+import { addLike, deleteLike } from "../../controllers/like";
 
 const mutations: MutationResolvers = {
   // User
@@ -34,7 +34,8 @@ const mutations: MutationResolvers = {
   addComment: (_, { input }, context: Context) => addComment(input, context),
 
   // Like
-  addLike: (_, { idPost }, context: Context) => addLike(idPost, context),
+  like: (_, { idPost }, context: Context) => addLike(idPost, context),
+  unlike: (_, { idPost }, context: Context) => deleteLike(idPost, context),
 };
 
 export default mutations;
