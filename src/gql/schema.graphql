@@ -35,6 +35,14 @@ type Post {
   createdAt: String
 }
 
+type Comment {
+  id: ID!
+  idPost: Post!
+  idUser: User!
+  comment: String!
+  createdAt: String
+}
+
 input UserInput {
   name: String!
   username: String!
@@ -56,19 +64,27 @@ input UserUpdateInput {
   description: String
 }
 
+input CommentInput {
+  idPost: ID!
+  comment: String!
+}
+
 type Query {
   # User
   getUser(id: ID, username: String): User!
   generateUploadUrl(folder: String!, uploadType: UploadType!): UploadUrl!
   searchUsers(search: String!): [User!]!
 
-  #Follow
+  # Follow
   isFollowing(username: String!): Boolean
   getFollowers(username: String!): [User!]!
   getFollowings(username: String!): [User!]!
 
-  #Post
+  # Post
   getPosts(username: String!): [Post!]!
+
+  # Comment
+  getComments(idPost: ID!): [Comment!]!
 }
 
 type Mutation {
@@ -85,4 +101,7 @@ type Mutation {
 
   # Post
   publish(urlFile: String!, typeFile: String!): Post!
+
+  # Comment
+  addComment(input: CommentInput!): Comment!
 }
