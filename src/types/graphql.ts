@@ -26,7 +26,7 @@ export type Comment = {
   createdAt?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   idPost: Post;
-  user: User;
+  idUser: User;
 };
 
 export type CommentInput = {
@@ -37,6 +37,7 @@ export type CommentInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
+  addLike?: Maybe<Scalars['Void']>;
   authUser: Token;
   deleteAvatar: User;
   follow?: Maybe<Scalars['Void']>;
@@ -50,6 +51,11 @@ export type Mutation = {
 
 export type MutationAddCommentArgs = {
   input: CommentInput;
+};
+
+
+export type MutationAddLikeArgs = {
+  idPost: Scalars['ID'];
 };
 
 
@@ -310,12 +316,13 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   idPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  idUser?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationAddCommentArgs, 'input'>>;
+  addLike?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationAddLikeArgs, 'idPost'>>;
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
   deleteAvatar?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   follow?: Resolver<Maybe<ResolversTypes['Void']>, ParentType, ContextType, RequireFields<MutationFollowArgs, 'username'>>;
