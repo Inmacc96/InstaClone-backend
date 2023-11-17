@@ -85,6 +85,9 @@ type Query {
 
   # Comment
   getComments(idPost: ID!): [Comment!]!
+
+  # Like
+  isLike(idPost: ID!): Boolean
 }
 
 type Mutation {
@@ -108,5 +111,4 @@ type Mutation {
   # Like
   like(idPost: ID!): Void
   unlike(idPost: ID!): Void
-
 }

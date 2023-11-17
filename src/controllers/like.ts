@@ -58,11 +58,14 @@ export const deleteLike = async (idPost: string, context: Context) => {
   });
 
   if (!isLikePost) {
-    throw new GraphQLError(`There is no like from ${currentUser.username} on that post`, {
-      extensions: {
-        code: "BAD_USER_INPUT",
-      },
-    });
+    throw new GraphQLError(
+      `There is no like from ${currentUser.username} on that post`,
+      {
+        extensions: {
+          code: "BAD_USER_INPUT",
+        },
+      }
+    );
   }
 
   // Eliminar el registro de Like
@@ -70,6 +73,31 @@ export const deleteLike = async (idPost: string, context: Context) => {
     await Like.deleteOne({ idUser: currentUser.id, idPost });
   } catch (err) {
     throw new GraphQLError(`Error deleting like to ${idPost}`, {
+      extensions: {
+        code: "INTERNAL_SERVER_ERROR",
+      },
+    });
+  }
+};
+
+export const isLike = async (idPost: string, context: Context) => {
+  const { currentUser } = context;
+
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  try {
+    const isLikePost = await Like.findOne({
+      idUser: currentUser.id,
+      idPost,
+    });
+    return !!isLikePost;
+  } catch (err) {
+    throw new GraphQLError("Error checking if post is liked", {
       extensions: {
         code: "INTERNAL_SERVER_ERROR",
       },

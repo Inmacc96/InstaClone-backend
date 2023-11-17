@@ -118,6 +118,7 @@ export type Query = {
   getPosts: Array<Post>;
   getUser: User;
   isFollowing?: Maybe<Scalars['Boolean']>;
+  isLike?: Maybe<Scalars['Boolean']>;
   searchUsers: Array<User>;
 };
 
@@ -156,6 +157,11 @@ export type QueryGetUserArgs = {
 
 export type QueryIsFollowingArgs = {
   username: Scalars['String'];
+};
+
+
+export type QueryIsLikeArgs = {
+  idPost: Scalars['ID'];
 };
 
 
@@ -357,6 +363,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getPosts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
   isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;
+  isLike?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsLikeArgs, 'idPost'>>;
   searchUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'search'>>;
 };
 
