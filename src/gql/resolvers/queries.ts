@@ -9,6 +9,7 @@ import {
 } from "../../controllers/follow";
 import { getPosts } from "../../controllers/post";
 import { getComments } from "../../controllers/comment";
+import { isLike, countLikes } from '../../controllers/like';
 
 const queries: QueryResolvers = {
   // User
@@ -28,6 +29,10 @@ const queries: QueryResolvers = {
 
   // Comments
   getComments: (_, { idPost }) => getComments(idPost),
+
+  // Like
+  isLike: (_, { idPost }, context: Context) => isLike(idPost, context),
+  countLikes: (_, { idPost }) => countLikes(idPost),
 };
 
 export default queries;
