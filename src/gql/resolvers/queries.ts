@@ -7,7 +7,7 @@ import {
   getFollowings,
   isFollowingUser,
 } from "../../controllers/follow";
-import { getPosts } from "../../controllers/post";
+import { getFeed, getPosts } from "../../controllers/post";
 import { getComments } from "../../controllers/comment";
 import { isLike, countLikes } from '../../controllers/like';
 
@@ -26,6 +26,7 @@ const queries: QueryResolvers = {
 
   // Post
   getPosts: (_, { username }) => getPosts(username),
+  getFeed:(_,{}, context:Context) => getFeed(context),
 
   // Comments
   getComments: (_, { idPost }) => getComments(idPost),

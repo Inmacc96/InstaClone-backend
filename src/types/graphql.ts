@@ -34,6 +34,15 @@ export type CommentInput = {
   idPost: Scalars['ID'];
 };
 
+export type FeedPost = {
+  __typename?: 'FeedPost';
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
+  idUser: User;
+  typeFile: Scalars['String'];
+  urlFile: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addComment: Comment;
@@ -102,7 +111,7 @@ export type MutationUpdateUserArgs = {
 
 export type Post = {
   __typename?: 'Post';
-  createdAt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
   id: Scalars['ID'];
   idUser: Scalars['ID'];
   typeFile: Scalars['String'];
@@ -114,6 +123,7 @@ export type Query = {
   countLikes?: Maybe<Scalars['Int']>;
   generateUploadUrl: UploadUrl;
   getComments: Array<Comment>;
+  getFeed: Array<FeedPost>;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
   getPosts: Array<Post>;
@@ -294,6 +304,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
   CommentInput: CommentInput;
+  FeedPost: ResolverTypeWrapper<FeedPost>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -315,6 +326,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Comment: Comment;
   CommentInput: CommentInput;
+  FeedPost: FeedPost;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -338,6 +350,15 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type FeedPostResolvers<ContextType = any, ParentType extends ResolversParentTypes['FeedPost'] = ResolversParentTypes['FeedPost']> = {
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  idUser?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  typeFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  urlFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationAddCommentArgs, 'input'>>;
   authUser?: Resolver<ResolversTypes['Token'], ParentType, ContextType, RequireFields<MutationAuthUserArgs, 'input'>>;
@@ -353,7 +374,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   idUser?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   typeFile?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -365,6 +386,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   countLikes?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<QueryCountLikesArgs, 'idPost'>>;
   generateUploadUrl?: Resolver<ResolversTypes['UploadUrl'], ParentType, ContextType, RequireFields<QueryGenerateUploadUrlArgs, 'folder' | 'uploadType'>>;
   getComments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'idPost'>>;
+  getFeed?: Resolver<Array<ResolversTypes['FeedPost']>, ParentType, ContextType>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
   getPosts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
@@ -405,6 +427,7 @@ export interface VoidScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 
 export type Resolvers<ContextType = any> = {
   Comment?: CommentResolvers<ContextType>;
+  FeedPost?: FeedPostResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

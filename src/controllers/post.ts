@@ -1,7 +1,8 @@
 import { GraphQLError } from "graphql";
 import User from "../models/user";
 import Post from "../models/post";
-import { User as UserType } from "../types/graphql";
+import Follow from "../models/follow";
+import { FeedPost, User as UserType } from "../types/graphql";
 import { Context } from "../types/Context";
 
 export const publish = async (
@@ -56,4 +57,35 @@ export const getPosts = async (username: string) => {
   //Obtener los posts de user
   const posts = await Post.find({ idUser: user.id }).sort({ createdAt: -1 });
   return posts;
+};
+
+export const getFeed = async (context: Context) => {
+  const { currentUser } = context;
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  // Obtener los usuarios que sigue currentUser
+  const followings = await Follow.find({ idUser: currentUser.id });
+
+  // Obtener las publicaciones de los usuarios que sigue currentUser
+  const postsList: FeedPost[] = [];
+
+  for await (const data of followings) {
+    const posts = await Post.find({ idUser: data.follow })
+      .sort({
+        createdAt: -1,
+      })
+      .populate<{ idUser: UserType }>("idUser")
+      .limit(5);
+
+    postsList.push(...(posts as FeedPost[]));
+  }
+
+  return postsList.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
 };

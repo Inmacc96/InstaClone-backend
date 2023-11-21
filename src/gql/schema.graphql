@@ -32,7 +32,7 @@ type Post {
   idUser: ID!
   urlFile: String!
   typeFile: String!
-  createdAt: String
+  createdAt: String!
 }
 
 type Comment {
@@ -41,6 +41,14 @@ type Comment {
   idUser: User!
   comment: String!
   createdAt: String
+}
+
+type FeedPost {
+  id: ID!
+  idUser: User!
+  urlFile: String!
+  typeFile: String!
+  createdAt: String!
 }
 
 input UserInput {
@@ -82,6 +90,7 @@ type Query {
 
   # Post
   getPosts(username: String!): [Post!]!
+  getFeed: [FeedPost!]!
 
   # Comment
   getComments(idPost: ID!): [Comment!]!
