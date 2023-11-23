@@ -150,17 +150,18 @@ export const getFollowers = async (username: string) => {
   }
 
   // Obtener los usuarios que siguen a user
-  const followers = await Follow.find({ follow: user._id }).populate<{idUser: UserType}>("idUser");
+  const followers = await Follow.find({ follow: user._id }).populate<{
+    idUser: UserType;
+  }>("idUser");
 
   const followersList: UserType[] = [];
 
   for await (const data of followers) {
-      followersList.push(data.idUser);
+    followersList.push(data.idUser);
   }
- 
+
   return followersList;
 };
-
 
 export const getFollowings = async (username: string) => {
   // Comprobar que el usuario existe
@@ -176,13 +177,42 @@ export const getFollowings = async (username: string) => {
   }
 
   // Obtener los usuarios que está siguiendo user
-  const followings = await Follow.find({ idUser: user._id }).populate<{follow: UserType}>("follow");
+  const followings = await Follow.find({ idUser: user._id }).populate<{
+    follow: UserType;
+  }>("follow");
 
   const followingsList: UserType[] = [];
 
   for await (const data of followings) {
-      followingsList.push(data.follow);
+    followingsList.push(data.follow);
   }
- 
+
   return followingsList;
+};
+
+export const getNotFollowings = async (context: Context) => {
+  const { currentUser } = context;
+
+  if (!currentUser)
+    throw new GraphQLError("Not authenticated", {
+      extensions: {
+        code: "UNAUTHENTICATED",
+      },
+    });
+
+  // Obtenemos 50 usuarios
+  const users = await User.find().limit(50);
+
+  const notFollowings = [];
+  for await (const user of users) {
+    const isFind = await Follow.findOne({
+      idUser: currentUser.id,
+      follow: user.id,
+    });
+    if (!isFind && user.id !== currentUser.id) {
+      notFollowings.push(user);
+    }
+  }
+
+  return notFollowings;
 };

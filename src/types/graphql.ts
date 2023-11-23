@@ -126,6 +126,7 @@ export type Query = {
   getFeed: Array<FeedPost>;
   getFollowers: Array<User>;
   getFollowings: Array<User>;
+  getNotFollowings: Array<User>;
   getPosts: Array<Post>;
   getUser: User;
   isFollowing?: Maybe<Scalars['Boolean']>;
@@ -389,6 +390,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFeed?: Resolver<Array<ResolversTypes['FeedPost']>, ParentType, ContextType>;
   getFollowers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'username'>>;
   getFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryGetFollowingsArgs, 'username'>>;
+  getNotFollowings?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
   getPosts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostsArgs, 'username'>>;
   getUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, Partial<QueryGetUserArgs>>;
   isFollowing?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<QueryIsFollowingArgs, 'username'>>;

@@ -87,7 +87,8 @@ type Query {
   isFollowing(username: String!): Boolean
   getFollowers(username: String!): [User!]!
   getFollowings(username: String!): [User!]!
-
+  getNotFollowings: [User!]!
+ 
   # Post
   getPosts(username: String!): [Post!]!
   getFeed: [FeedPost!]!

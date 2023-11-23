@@ -5,6 +5,7 @@ import { Context } from "../../types/Context";
 import {
   getFollowers,
   getFollowings,
+  getNotFollowings,
   isFollowingUser,
 } from "../../controllers/follow";
 import { getFeed, getPosts } from "../../controllers/post";
@@ -23,6 +24,7 @@ const queries: QueryResolvers = {
     isFollowingUser(username, context),
   getFollowers: (_, { username }) => getFollowers(username),
   getFollowings: (_, { username }) => getFollowings(username),
+  getNotFollowings: (_, {}, context: Context) => getNotFollowings(context),
 
   // Post
   getPosts: (_, { username }) => getPosts(username),
